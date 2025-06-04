@@ -124,19 +124,26 @@ curl http://<KONG_PROXY_EXTERNAL_IP>/hello/get
 
 ### 2. Akses Grafana
 
-Dapatkan IP eksternal dari Service grafana:
+Untuk Kind cluster, gunakan port-forward:
 ```bash
-kubectl get svc grafana -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
-# Atau untuk Minikube/Docker Desktop:
-# minikube service grafana --url
+kubectl port-forward svc/grafana 3000:80
 ```
 
-Buka browser Anda dan navigasi ke http://<GRAFANA_EXTERNAL_IP>.
+Buka browser Anda dan navigasi ke http://localhost:3000
 
 ```
 Username default: admin
 Password default: admin (Anda akan diminta untuk mengubahnya pada login pertama).
 ```
+
+### 3. Akses Prometheus
+
+Untuk Kind cluster, gunakan port-forward:
+```bash
+kubectl port-forward svc/prometheus 9090:80
+```
+
+Buka browser Anda dan navigasi ke http://localhost:9090
 
 ## Pembersihan (Opsional)
 
@@ -171,3 +178,19 @@ Langkah-langkah untuk memastikan Prometheus berjalan normal:
    kubectl delete pod -l app=prometheus
    ```
 4. Verifikasi kembali status pod Prometheus untuk memastikan sudah berjalan normal.
+
+## Catatan Khusus untuk Kind Cluster
+
+Jika Anda menggunakan Kind cluster, perhatikan hal-hal berikut:
+1. Service tipe LoadBalancer tidak didukung secara native. Gunakan NodePort atau port-forward untuk mengakses service dari luar cluster.
+2. Untuk mengakses Grafana, gunakan port-forward:
+   ```bash
+   kubectl port-forward svc/grafana 3000:80
+   ```
+   Kemudian akses Grafana di browser melalui `http://localhost:3000`
+
+3. Untuk mengakses Prometheus, gunakan port-forward:
+   ```bash
+   kubectl port-forward svc/prometheus 9090:80
+   ```
+   Kemudian akses Prometheus di browser melalui `http://localhost:9090`

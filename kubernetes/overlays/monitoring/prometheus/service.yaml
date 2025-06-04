@@ -5,11 +5,11 @@ metadata:
   labels:
     app: prometheus
 spec:
-  type: ClusterIP # Prometheus biasanya diakses internal oleh Grafana
+  type: NodePort
   selector:
     app: prometheus
   ports:
-  - port: 9090
+  - port: 80
     targetPort: 9090
     protocol: TCP
     name: http 

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: grafana
 spec:
-  type: LoadBalancer # Atau NodePort jika ingin diakses dari luar cluster Anda
+  type: NodePort
   selector:
     app: grafana
   ports:
