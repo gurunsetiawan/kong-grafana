@@ -5,11 +5,65 @@ metadata:
 data:
   kong-official-dashboard.json: |
     {
+      "__inputs": [
+        {
+          "name": "DS_PROMETHEUS",
+          "label": "Prometheus",
+          "description": "",
+          "type": "datasource",
+          "pluginId": "prometheus",
+          "pluginName": "Prometheus"
+        }
+      ],
+      "__requires": [
+        {
+          "type": "panel",
+          "id": "gauge",
+          "name": "Gauge",
+          "version": ""
+        },
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "8.4.5"
+        },
+        {
+          "type": "panel",
+          "id": "graph",
+          "name": "Graph",
+          "version": ""
+        },
+        {
+          "type": "panel",
+          "id": "heatmap",
+          "name": "Heatmap",
+          "version": ""
+        },
+        {
+          "type": "datasource",
+          "id": "prometheus",
+          "name": "Prometheus",
+          "version": "1.0.0"
+        },
+        {
+          "type": "panel",
+          "id": "singlestat",
+          "name": "Singlestat",
+          "version": ""
+        },
+        {
+          "type": "panel",
+          "id": "table",
+          "name": "Table",
+          "version": ""
+        }
+      ],
       "annotations": {
         "list": [
           {
             "builtIn": 1,
-            "datasource": "-- Grafana --",
+            "datasource": "${DS_PROMETHEUS}",
             "enable": true,
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
@@ -18,52 +72,286 @@ data:
           }
         ]
       },
+      "description": "Dashboard that graphs metrics exported via Prometheus plugin in Kong (http://github.com/kong/kong)",
       "editable": true,
       "gnetId": 7424,
       "graphTooltip": 0,
       "id": null,
-      "links": [],
+      "iteration": 1662693484232,
+      "links": [
+        {
+          "asDropdown": false,
+          "icon": "info",
+          "includeVars": false,
+          "keepTime": false,
+          "tags": [],
+          "targetBlank": true,
+          "title": "Prometheus Plugin Config",
+          "tooltip": "",
+          "type": "link",
+          "url": "https://docs.konghq.com/hub/kong-inc/prometheus/"
+        }
+      ],
       "panels": [
-        # Tempelkan seluruh JSON dashboard Grafana di sini
-        # Anda bisa mengunduhnya dari https://grafana.com/grafana/dashboards/7424-kong-official-dashboard/
-        # Pastikan formatnya benar setelah ditempel
+        {
+          "collapsed": true,
+          "datasource": "${DS_PROMETHEUS}",
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 38,
+          "panels": [
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "${DS_PROMETHEUS}",
+              "fieldConfig": {
+                "defaults": {
+                  "links": [],
+                  "custom": {
+                    "fillOpacity": 10,
+                    "showPoints": "never",
+                    "spanNulls": true
+                  },
+                  "unit": "reqps"
+                },
+                "overrides": []
+              },
+              "fill": 1,
+              "fillGradient": 0,
+              "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 1
+              },
+              "hiddenSeries": false,
+              "id": 1,
+              "legend": {
+                "alignAsTable": false,
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "links": [],
+              "nullPointMode": "null",
+              "options": {
+                "alertThreshold": true,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "hidden",
+                  "placement": "bottom"
+                },
+                "tooltip": {
+                  "mode": "multi",
+                  "sort": "none"
+                }
+              },
+              "paceLength": 10,
+              "percentage": false,
+              "pluginVersion": "8.4.5",
+              "pointradius": 5,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "sum(rate(kong_http_requests_total{instance=~\"$instance\"}[1m]))",
+                  "format": "time_series",
+                  "intervalFactor": 2,
+                  "refId": "A",
+                  "legendFormat": "Requests/second"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Total requests per second (RPS)",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "type": "timeseries",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "s",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "title": "Request rate",
+          "type": "row"
+        }
       ],
-      "schemaVersion": 26,
+      "refresh": false,
+      "schemaVersion": 22,
       "style": "dark",
-      "tags": [
-        "kong"
-      ],
+      "tags": ["kong"],
       "templating": {
         "list": [
           {
-            "current": {
-              "selected": true,
-              "text": "All",
-              "value": "$__all"
-            },
-            "datasource": "Prometheus",
-            "definition": "label_values(kong_nginx_http_requests_total_sum, service)",
+            "allValue": ".*",
+            "current": {},
+            "datasource": "${DS_PROMETHEUS}",
+            "definition": "label_values(kong_http_requests_total,service)",
             "description": null,
+            "error": null,
             "hide": 0,
             "includeAll": true,
-            "label": "Service",
+            "index": -1,
+            "label": "",
             "multi": true,
             "name": "service",
             "options": [],
-            "query": "label_values(kong_nginx_http_requests_total_sum, service)",
+            "query": "label_values(kong_http_requests_total,service)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": ".*",
+            "current": {},
+            "datasource": "${DS_PROMETHEUS}",
+            "definition": "label_values(kong_nginx_connections_total,instance)",
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "index": -1,
+            "label": "",
+            "multi": true,
+            "name": "instance",
+            "options": [],
+            "query": "label_values(kong_nginx_connections_total,instance)",
+            "refresh": 2,
+            "regex": ".*",
+            "skipUrlSync": false,
+            "sort": 1,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": ".*",
+            "current": {},
+            "datasource": "${DS_PROMETHEUS}",
+            "definition": "label_values(kong_http_requests_total,route)",
+            "description": "Ingress",
+            "error": null,
+            "hide": 0,
+            "includeAll": true,
+            "index": -1,
+            "label": "",
+            "multi": true,
+            "name": "route",
+            "options": [],
+            "query": "label_values(kong_http_requests_total,route)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 1,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": null,
+            "current": {},
+            "datasource": "${DS_PROMETHEUS}",
+            "definition": "label_values(kong_upstream_target_health, upstream)",
+            "hide": 0,
+            "includeAll": true,
+            "index": -1,
+            "label": null,
+            "multi": true,
+            "name": "upstream",
+            "options": [],
+            "query": "label_values(kong_upstream_target_health, upstream)",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
             "sort": 0,
             "tagValuesQuery": "",
             "tags": [],
+            "tagsQuery": "",
             "type": "query",
-            "useAllValue": false
+            "useTags": false
+          },
+          {
+            "current": {
+              "selected": false,
+              "text": "Prometheus",
+              "value": "Prometheus"
+            },
+            "description": null,
+            "error": null,
+            "hide": 0,
+            "includeAll": false,
+            "label": "Datasource",
+            "multi": false,
+            "name": "DS_PROMETHEUS",
+            "options": [],
+            "query": "prometheus",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "type": "datasource"
           }
         ]
       },
       "time": {
-        "from": "now-1h",
+        "from": "now-15m",
         "to": "now"
       },
       "timepicker": {
@@ -92,7 +380,7 @@ data:
         ]
       },
       "timezone": "",
-      "title": "Kong Official Dashboard",
-      "uid": "7424-kong-official-dashboard",
-      "version": 1
+      "title": "Kong (official)",
+      "uid": "mY9p7dQmz",
+      "version": 9
     }

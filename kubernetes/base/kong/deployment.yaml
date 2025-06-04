@@ -14,6 +14,10 @@ spec:
       labels:
         app: kong
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
       - name: kong
         image: kong:3.7.0 # Gunakan versi spesifik yang stabil
@@ -28,7 +32,16 @@ spec:
           containerPort: 8444
         env:
         - name: KONG_DATABASE
-          value: "off" # Untuk pengujian cepat tanpa database. Gunakan 'postgres' atau 'cassandra' untuk produksi.
+          value: "postgres"  # Menggunakan PostgreSQL untuk produksi
+        - name: KONG_PG_HOST
+          value: "kong-database-postgresql"  # Nama service PostgreSQL yang benar
+        - name: KONG_PG_USER
+          value: "kong"
+        - name: KONG_PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: kong-database-postgresql
+              key: password
         - name: KONG_PROXY_LISTEN
           value: "0.0.0.0:8000, 0.0.0.0:8443 ssl"
         - name: KONG_ADMIN_LISTEN
@@ -38,6 +51,18 @@ spec:
           value: "prometheus" # Mengaktifkan plugin Prometheus Kong
         - name: KONG_PROMETHEUS_LISTEN
           value: "0.0.0.0:8001" # Plugin Prometheus akan mengekspos metrik di port Admin API
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: admin-http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: admin-http
+          initialDelaySeconds: 30
+          periodSeconds: 10
         resources: # Sangat direkomendasikan untuk stabilitas
           requests:
             memory: "256Mi"

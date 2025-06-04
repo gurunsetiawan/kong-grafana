@@ -14,7 +14,7 @@ data:
       - job_name: 'kong'
         metrics_path: '/metrics' # Default path untuk plugin Prometheus Kong
         kubernetes_sd_configs:
-        - role: endpoint
+        - role: endpoints
         relabel_configs:
         - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
           action: keep
