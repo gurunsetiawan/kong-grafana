@@ -98,9 +98,23 @@ kubectl get pods -l app=grafana
 kubectl get svc grafana
 ```
 
-## Fitur Keamanan
+## Fitur Utama
 
-Konfigurasi ini mencakup beberapa fitur keamanan:
+### 1. API Traffic Monitoring
+- Metrik dasar seperti request rate, latency, dan error rate melalui Prometheus
+- Visualisasi metrik melalui Grafana dashboard
+
+### 2. Audit Trail & Logging
+- Request/Response logging melalui plugin `http-log`
+- Informasi audit tambahan melalui plugin `request-transformer`:
+  - Request ID
+  - User ID (jika menggunakan authentication)
+  - Service Name
+  - Route Name
+- File logging untuk menyimpan log ke file lokal
+- Log dapat diakses melalui volume mount di pod Kong
+
+### 3. Security Features
 - Security context untuk Kong container
 - Health checks (liveness dan readiness probes)
 - Secret untuk kredensial database
@@ -144,6 +158,66 @@ kubectl port-forward svc/prometheus 9090:80
 ```
 
 Buka browser Anda dan navigasi ke http://localhost:9090
+
+## Mengakses Log dan Audit Trail
+
+### 1. Melihat Log Langsung dari Pod Kong
+
+```bash
+# Mendapatkan nama pod Kong
+kubectl get pods -l app=kong
+
+# Melihat log file
+kubectl exec -it <kong-pod-name> -- cat /usr/local/kong/logs/access.log
+
+# Melihat log secara real-time (seperti tail -f)
+kubectl exec -it <kong-pod-name> -- tail -f /usr/local/kong/logs/access.log
+```
+
+### 2. Menggunakan kubectl logs
+
+```bash
+# Melihat log Kong secara real-time
+kubectl logs -f -l app=kong
+
+# Melihat log dengan filter
+kubectl logs -l app=kong | grep "error"
+```
+
+### 3. Mengakses Log dari Volume
+
+Log disimpan dalam volume `kong-logs`. Anda bisa mengaksesnya dengan:
+
+```bash
+# Mendapatkan nama pod Kong
+kubectl get pods -l app=kong
+
+# Masuk ke pod Kong
+kubectl exec -it <kong-pod-name> -- /bin/sh
+
+# Di dalam pod, Anda bisa melihat log
+cd /usr/local/kong/logs
+cat access.log
+```
+
+### Format Log
+
+Setiap entri log akan mencakup informasi berikut:
+- Request ID
+- Timestamp
+- Client IP
+- HTTP Method
+- Path
+- Response Status
+- Latency
+- User ID (jika menggunakan authentication)
+- Service Name
+- Route Name
+
+Contoh format log:
+```
+2025-06-04T08:00:00.000Z | 192.168.1.1 | GET | /api/v1/users | 200 | 50ms | user123 | user-service | user-route
+```
 
 ## Pembersihan (Opsional)
 

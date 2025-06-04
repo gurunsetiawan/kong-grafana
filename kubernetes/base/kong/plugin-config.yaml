@@ -1,0 +1,36 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: http-log
+  annotations:
+    kubernetes.io/ingress.class: kong
+config:
+  http_endpoint: http://kong-logging:8080/log
+  method: POST
+  content_type: application/json
+  timeout: 10000
+  keepalive: 60000
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: request-transformer
+  annotations:
+    kubernetes.io/ingress.class: kong
+config:
+  add:
+    headers:
+    - "X-Request-ID: $request_id"
+    - "X-User-ID: $consumer_id"
+    - "X-Service-Name: $service_name"
+    - "X-Route-Name: $route_name"
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: file-log
+  annotations:
+    kubernetes.io/ingress.class: kong
+config:
+  path: /usr/local/kong/logs/access.log
+  reopen: true 

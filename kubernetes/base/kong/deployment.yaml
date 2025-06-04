@@ -46,27 +46,36 @@ spec:
           value: "0.0.0.0:8000, 0.0.0.0:8443 ssl"
         - name: KONG_ADMIN_LISTEN
           value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
-        # --- Konfigurasi untuk Monitoring (Plugin Prometheus Kong) ---
+        # --- Konfigurasi untuk Monitoring dan Logging ---
         - name: KONG_PLUGINS
-          value: "prometheus" # Mengaktifkan plugin Prometheus Kong
+          value: "prometheus,http-log,request-transformer,file-log"
         - name: KONG_PROMETHEUS_LISTEN
-          value: "0.0.0.0:8001" # Plugin Prometheus akan mengekspos metrik di port Admin API
-        livenessProbe:
-          httpGet:
-            path: /status
-            port: admin-http
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /status
-            port: admin-http
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        resources: # Sangat direkomendasikan untuk stabilitas
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+          value: "0.0.0.0:8001"
+        # --- Konfigurasi untuk File Logging ---
+        - name: KONG_FILE_LOG_PATH
+          value: "/usr/local/kong/logs/access.log"
+        volumeMounts:
+        - name: kong-logs
+          mountPath: /usr/local/kong/logs
+      volumes:
+      - name: kong-logs
+        emptyDir: {}
+      livenessProbe:
+        httpGet:
+          path: /status
+          port: admin-http
+        initialDelaySeconds: 30
+        periodSeconds: 10
+      readinessProbe:
+        httpGet:
+          path: /status
+          port: admin-http
+        initialDelaySeconds: 30
+        periodSeconds: 10
+      resources: # Sangat direkomendasikan untuk stabilitas
+        requests:
+          memory: "256Mi"
+          cpu: "250m"
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
