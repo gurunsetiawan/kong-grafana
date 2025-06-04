@@ -1,28 +1,30 @@
+```
 .
-ÃÄÄ kubernetes/
-³   ÃÄÄ base/
-³   ³   ÃÄÄ kong/
-³   ³   ³   ÃÄÄ deployment.yaml
-³   ³   ³   ÀÄÄ service.yaml
-³   ³   ÃÄÄ hello-world-api/
-³   ³   ³   ÃÄÄ deployment.yaml
-³   ³   ³   ÀÄÄ service.yaml
-³   ³   ÀÄÄ kustomization.yaml
-³   ÃÄÄ overlays/
-³   ³   ÃÄÄ dev/
-³   ³   ³   ÃÄÄ kustomization.yaml
-³   ³   ³   ÀÄÄ kong-route.yaml
-³   ³   ÃÄÄ monitoring/
-³   ³   ³   ÃÄÄ kustomization.yaml
-³   ³   ³   ÃÄÄ prometheus/
-³   ³   ³   ³   ÃÄÄ deployment.yaml
-³   ³   ³   ³   ÃÄÄ service.yaml
-³   ³   ³   ³   ÀÄÄ configmap.yaml
-³   ³   ³   ÀÄÄ grafana/
-³   ³   ³       ÃÄÄ deployment.yaml
-³   ³   ³       ÃÄÄ service.yaml
-³   ³   ³       ÃÄÄ configmap.yaml
-³   ³   ³       ÀÄÄ datasource.yaml
-³   ÀÄÄ README.md
-ÃÄÄ .gitignore
-ÀÄÄ README.md
+ÃƒÃ„Ã„ kubernetes/
+Â³   ÃƒÃ„Ã„ base/
+Â³   Â³   ÃƒÃ„Ã„ kong/
+Â³   Â³   Â³   ÃƒÃ„Ã„ deployment.yaml
+Â³   Â³   Â³   Ã€Ã„Ã„ service.yaml
+Â³   Â³   ÃƒÃ„Ã„ hello-world-api/
+Â³   Â³   Â³   ÃƒÃ„Ã„ deployment.yaml
+Â³   Â³   Â³   Ã€Ã„Ã„ service.yaml
+Â³   Â³   Ã€Ã„Ã„ kustomization.yaml
+Â³   ÃƒÃ„Ã„ overlays/
+Â³   Â³   ÃƒÃ„Ã„ dev/
+Â³   Â³   Â³   ÃƒÃ„Ã„ kustomization.yaml
+Â³   Â³   Â³   Ã€Ã„Ã„ kong-route.yaml
+Â³   Â³   ÃƒÃ„Ã„ monitoring/
+Â³   Â³   Â³   ÃƒÃ„Ã„ kustomization.yaml
+Â³   Â³   Â³   ÃƒÃ„Ã„ prometheus/
+Â³   Â³   Â³   Â³   ÃƒÃ„Ã„ deployment.yaml
+Â³   Â³   Â³   Â³   ÃƒÃ„Ã„ service.yaml
+Â³   Â³   Â³   Â³   Ã€Ã„Ã„ configmap.yaml
+Â³   Â³   Â³   Ã€Ã„Ã„ grafana/
+Â³   Â³   Â³       ÃƒÃ„Ã„ deployment.yaml
+Â³   Â³   Â³       ÃƒÃ„Ã„ service.yaml
+Â³   Â³   Â³       ÃƒÃ„Ã„ configmap.yaml
+Â³   Â³   Â³       Ã€Ã„Ã„ datasource.yaml
+Â³   Ã€Ã„Ã„ README.md
+ÃƒÃ„Ã„ .gitignore
+Ã€Ã„Ã„ README.md
+```
