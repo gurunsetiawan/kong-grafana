@@ -169,17 +169,22 @@ kubectl apply -k overlays/monitoring/
 ```
 
 Penjelasan Komponen
+
 Kong API Gateway:
 deployment.yaml: Mendefinisikan Pod Kong dengan plugin Prometheus diaktifkan.
 service.yaml: Mendefinisikan Service untuk Kong Proxy (akses eksternal) dan Kong Admin API (akses internal).
+
 Hello World API:
 deployment.yaml: Contoh aplikasi API sederhana yang akan dipantau.
 service.yaml: Service untuk aplikasi Hello World.
+
 KongRoute: Mengkonfigurasi Kong untuk mengarahkan lalu lintas dari Kong Proxy ke hello-world-api berdasarkan path /hello.
+
 Prometheus:
 deployment.yaml: Mendefinisikan Pod Prometheus.
 service.yaml: Service untuk Prometheus.
 configmap.yaml: Mengkonfigurasi Prometheus untuk scrape metrik dari Kong Admin API (port 8001).
+
 Grafana:
 deployment.yaml: Mendefinisikan Pod Grafana.
 service.yaml: Service untuk Grafana (akses eksternal).
