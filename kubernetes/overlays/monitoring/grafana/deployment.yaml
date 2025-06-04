@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      securityContext:
+        fsGroup: 472
+        supplementalGroups: # Penting untuk Grafana menulis ke volume
+          - 0
+      containers:
+      - name: grafana
+        image: grafana/grafana:10.4.2 # Gunakan versi stabil
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GF_PATHS_CONFIG
+          value: /etc/grafana/grafana.ini # Pastikan ini sesuai dengan path configmap
+        volumeMounts:
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+        - name: grafana-datasources
+          mountPath: /etc/grafana/provisioning/datasources # Untuk datasource otomatis
+        - name: grafana-dashboards
+          mountPath: /etc/grafana/provisioning/dashboards # Untuk dashboard otomatis
+      volumes:
+      - name: grafana-storage
+        emptyDir: {} # Gunakan PersistentVolumeClaim untuk produksi
+      - name: grafana-datasources
+        configMap:
+          name: grafana-datasources-config # Dari configmap di bawah
+      - name: grafana-dashboards
+        configMap:
+          name: grafana-dashboards-config # Dari configmap di bawah

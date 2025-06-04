@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  type: LoadBalancer # Atau NodePort jika ingin diakses dari luar cluster Anda
+  selector:
+    app: grafana
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http

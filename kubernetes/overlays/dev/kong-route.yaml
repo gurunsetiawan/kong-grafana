@@ -1,0 +1,14 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongRoute
+metadata:
+  name: hello-world-route-dev
+  namespace: default # Atau namespace lain yang Anda gunakan
+spec:
+  protocols:
+  - http
+  - https
+  paths:
+  - /hello # Kong akan mengarahkan semua permintaan ke /hello
+  service:
+    name: hello-world-service
+    port: 80

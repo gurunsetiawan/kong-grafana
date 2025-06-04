@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kong
+  labels:
+    app: kong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kong
+  template:
+    metadata:
+      labels:
+        app: kong
+    spec:
+      containers:
+      - name: kong
+        image: kong:3.7.0 # Gunakan versi spesifik yang stabil
+        ports:
+        - name: proxy-http
+          containerPort: 8000
+        - name: proxy-https
+          containerPort: 8443
+        - name: admin-http
+          containerPort: 8001
+        - name: admin-https
+          containerPort: 8444
+        env:
+        - name: KONG_DATABASE
+          value: "off" # Untuk pengujian cepat tanpa database. Gunakan 'postgres' atau 'cassandra' untuk produksi.
+        - name: KONG_PROXY_LISTEN
+          value: "0.0.0.0:8000, 0.0.0.0:8443 ssl"
+        - name: KONG_ADMIN_LISTEN
+          value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+        # --- Konfigurasi untuk Monitoring (Plugin Prometheus Kong) ---
+        - name: KONG_PLUGINS
+          value: "prometheus" # Mengaktifkan plugin Prometheus Kong
+        - name: KONG_PROMETHEUS_LISTEN
+          value: "0.0.0.0:8001" # Plugin Prometheus akan mengekspos metrik di port Admin API
+        resources: # Sangat direkomendasikan untuk stabilitas
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
